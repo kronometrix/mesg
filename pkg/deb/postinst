@@ -1,17 +1,17 @@
 #!/bin/sh
 
 # initial installation, after tasks
-chown -R krmx:krmx /opt/kronometrix/auth || :
+chown -R krmx:krmx /opt/kronometrix/mesg || :
 
-if [ ! -L /etc/init.d/kronometrix.auth ]; then
-    ln -s /opt/kronometrix/auth/etc/kronometrix.auth /etc/init.d/kronometrix.auth || :
+if [ ! -L /etc/init.d/kronometrix.mesg ]; then
+    ln -s /opt/kronometrix/mesg/etc/kronometrix.mesg /etc/init.d/kronometrix.mesg || :
 fi
 
-# link here kronometrix.auth
-update-rc.d kronometrix.auth start 20 2 3 4 5 . stop 20 0 1 6 . >/dev/null 2>&1 || :
+# link here kronometrix.mesg
+update-rc.d kronometrix.mesg start 20 2 3 4 5 . stop 20 0 1 6 . >/dev/null 2>&1 || :
 
-if [ -d /opt/kronometrix/auth/logs ]; then
-    chown -R krmx:krmx /opt/kronometrix/auth/logs || :
+if [ -d /opt/kronometrix/mesg/logs ]; then
+    chown -R krmx:krmx /opt/kronometrix/mesg/logs || :
 fi
 
-/etc/init.d/kronometrix.auth start >/dev/null 2>&1 || :
+/etc/init.d/kronometrix.mesg start >/dev/null 2>&1 || :
