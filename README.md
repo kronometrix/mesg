@@ -1,10 +1,9 @@
-# Kronometrix Authentication #
+# Kronometrix Messenger #
 
-This is the authentication binary package for **Kronometrix** software.
+This is the messenger binary package for **Kronometrix** software.
 
 ## Modules ##
 * Openresty
-* Redis
 
 ## Libs ##
 * lua-resty-smtp
