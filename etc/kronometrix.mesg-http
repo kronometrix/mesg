@@ -26,19 +26,17 @@
 RETVAL=0
 OS_NAME=`uname -s`
 
-BASEDIR="/opt/kronometrix/auth"
-REDIS_CMD="${BASEDIR}/bin/redis-server"
-REDIS_CONF="${BASEDIR}/etc/redis.conf"
-REDISCLI_CMD="${BASEDIR}/bin/redis-cli"
-REDIS_PID="${BASEDIR}/logs/redis.pid"
-REDIS_SOCK="${BASEDIR}/logs/auth.sock"
+BASEDIR="/opt/kronometrix/mesg"
+HTTP_CMD="${BASEDIR}/nginx/sbin/nginx"
+HTTP_CONF="${BASEDIR}/nginx/conf/nginx.conf"
+HTTP_PID="${BASEDIR}/nginx/logs/nginx.pid"
 
 # basedir test
 test -d ${BASEDIR} || exit 0
 
 
 start() {
-    echo "Starting Kronometrix auth db service"
+    echo "Starting Kronometrix mesg http service"
 
     if [ "X${OS_NAME}" = "XSunOS" ]; then
         echo " ${rep} service: \c"
@@ -46,17 +44,17 @@ start() {
         echo -n " ${rep} service: "
     fi  
 
-    if [ -f ${REDIS_PID} ]; then
-        kill -0 `cat ${REDIS_PID}` >/dev/null 2>&1
+    if [ -f ${HTTP_PID} ]; then
+        kill -0 `cat ${HTTP_PID}` >/dev/null 2>&1
         if [ $? -eq  1 ]; then
-            rm ${REDIS_PID}
-            $REDIS_CMD $REDIS_CONF
+            rm ${HTTP_PID}
+            $HTTP_CMD -c $HTTP_CONF &
             RETVAL=$?
         else
             RETVAL=1
         fi
     else
-        $REDIS_CMD $REDIS_CONF 2>/dev/null &
+        $HTTP_CMD -c $HTTP_CONF 2>/dev/null &
         RETVAL=$?
     fi
 
@@ -67,8 +65,7 @@ start() {
 
 
 stop() {
-    echo "Stopping Kronometrix auth db service"
-
+    echo "Stopping Kronometrix mesg service"
 
     if [ "X${OS_NAME}" = "XSunOS" ]; then
         echo " ${rep} service: \c"
@@ -76,20 +73,13 @@ stop() {
         echo -n " ${rep} service: "
     fi
 
-
-    if [ -e ${REDIS_SOCK} ]; then
-        $REDISCLI_CMD -s $REDIS_SOCK shutdown >/dev/null 2>&1
+    if [ -f ${HTTP_PID} ]; then
+        kill `cat ${HTTP_PID}` >/dev/null 2>&1
         RETVAL=$?
         [ $RETVAL -eq 0 ] && echo "ok" || echo "failed"
     else
-        if [ -f ${REDIS_PID} ]; then
-            $REDISCLI_CMD shutdown >/dev/null 2>&1
-            RETVAL=$?
-            [ $RETVAL -eq 0 ] && echo "ok" || echo "failed"
-        else
-            RETVAL=1
-            [ $RETVAL -eq 0 ] && echo "ok" || echo "failed"
-        fi
+        RETVAL=1
+        [ $RETVAL -eq 0 ] && echo "ok" || echo "failed"
     fi
 
     return $RETVAL
