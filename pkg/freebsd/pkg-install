@@ -1,0 +1,34 @@
+#!/bin/sh
+
+RC_CONF=/etc/rc.conf
+
+if [ $2 == "PRE-INSTALL" ]; then
+    if ! /usr/sbin/pw groupshow krmx >/dev/null 2>&1; then
+        /usr/sbin/pw groupadd krmx -g 5000
+    fi
+
+    if ! /usr/sbin/pw usershow krmx >/dev/null 2>&1; then
+        /usr/sbin/pw useradd krmx -m -d /home/krmx \
+         -u 5000 -g 5000 -c "Kronometrix user"
+    fi
+fi
+
+if [ $2 == "POST-INSTALL" ]; then
+    chown -R krmx:krmx /opt/kronometrix/mesg
+    cp /opt/kronometrix/mesg/etc/rc/kronometrix_mesg /etc/rc.d/
+    /etc/rc.d/kronometrix_mesg onestart
+
+    # install service
+    grep kronometrix_mesg ${RC_CONF} >/dev/null 2>&1
+
+    if [ $? -eq 1 ]; then
+        # add the service
+        echo "kronometrix_mesg=\"YES\"" >> ${RC_CONF}
+        echo "kronometrix_mesg_user=\"krmx\"" >> ${RC_CONF}
+        if [ $? -eq 1 ]; then
+            echo "Error: cannot activate service, exit now"
+            exit 1
+        fi
+    fi
+fi
+

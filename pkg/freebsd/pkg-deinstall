@@ -1,0 +1,26 @@
+#!/bin/sh
+
+if [ $2 == "DEINSTALL" ]; then
+    /etc/rc.d/kronometrix_mesg onestop >/dev/null 2>&1
+fi
+
+if [ $2 == "POST-DEINSTALL" ]; then
+    [ -f /etc/rc.d/kronometrix_mesg ] && rm /etc/rc.d/kronometrix_mesg
+
+    # uninstall service
+    SVC=kronometrix_mesg
+    RC_CONF=/etc/rc.conf
+    DATE=`date +"%Y%m%d_%H%M%S"`
+
+    grep "$SVC" ${RC_CONF} >/dev/null 2>&1
+    if [ $? -eq 0 ]; then
+        cp ${RC_CONF} ${RC_CONF}.${DATE}
+        # remove the service
+        grep -v "$SVC" ${RC_CONF}.${DATE} > ${RC_CONF}.${DATE}.tmp
+        mv ${RC_CONF}.${DATE}.tmp ${RC_CONF}
+        if [ $? -eq 1 ]; then
+            echo "Error: cannot uninstall service: $SVC, exit now"
+            exit 1
+        fi
+    fi
+fi
