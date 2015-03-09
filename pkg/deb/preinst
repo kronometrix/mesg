@@ -2,17 +2,17 @@
 
 # echo "preinst: preparing to install package"
 # initial installation
-if [ -f /etc/init.d/kronometrix.mesg ]; then
+if [ -L /etc/init.d/kronometrix_mesg ]; then
     # echo "preinst: stopping kronometrix mesg..."
-    /etc/init.d/kronometrix.mesg stop >/dev/null 2>&1 || :
+    /etc/init.d/kronometrix_mesg stop >/dev/null 2>&1 || :
 fi
 
 if ! getent group krmx >/dev/null; then
-        groupadd krmx || :
+        groupadd -g 5000 krmx || :
 fi
 
 if ! getent passwd krmx >/dev/null; then
-    useradd -g krmx -d /home/krmx -m krmx || :
+    useradd -u 5000 -g krmx -d /home/krmx -m krmx || :
 fi
 
 if [ ! -d /opt/kronometrix ]; then
