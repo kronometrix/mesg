@@ -16,6 +16,6 @@ if ! getent passwd krmx >/dev/null; then
 fi
 
 if [ ! -d /opt/kronometrix ]; then
-    mkdir /opt/kronometrix || :
+    mkdir -p /opt/kronometrix || :
 fi
 
