@@ -24,7 +24,7 @@
 Summary: Kronometrix Analytics Appliance Messenger
 Name: kronometrix-mesg
 Version: 1.0.0
-Release: b60
+Release: b20
 Group: System/Monitoring/Tools
 License: MIT
 URL: http://www.kronometrix.com/
