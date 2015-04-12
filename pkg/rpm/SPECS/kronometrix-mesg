@@ -21,8 +21,8 @@
 %endif
 
 
-Summary: Kronometrix Analytics Appliance Kernel
-Name: kronometrix-kernel
+Summary: Kronometrix Analytics Appliance Messenger
+Name: kronometrix-mesg
 Version: 1.0.0
 Release: b60
 Group: System/Monitoring/Tools
@@ -71,14 +71,14 @@ rm -rf "$RPM_BUILD_ROOT"
 
 %files
 %defattr(755,krmx,krmx)
-/opt/kronometrix/kernel/*
+/opt/kronometrix/mesg/*
 
 # before install
 %pre
 if [ $1 -eq 1 ]; then
     # initial installation
-    if [ -f /etc/init.d/kronometrix_kernel ]; then
-        /etc/init.d/kronometrix_kernel stop >/dev/null 2>&1 || :
+    if [ -f /etc/init.d/kronometrix_mesg ]; then
+        /etc/init.d/kronometrix_mesg stop >/dev/null 2>&1 || :
     fi
 
     if ! getent group krmx >/dev/null; then
@@ -95,7 +95,7 @@ if [ $1 -eq 1 ]; then
 elif [ $1 -eq 2 ]; then
     # upgrade
     if [ -f /etc/init.d/kronometrix/kernel ]; then
-        /etc/init.d/kronometrix_kernel stop >/dev/null 2>&1 || :
+        /etc/init.d/kronometrix_mesg stop >/dev/null 2>&1 || :
     fi
 
     if ! getent group krmx >/dev/null; then
@@ -115,29 +115,29 @@ fi
 if [ $1 -eq 1 ]; then
     # initial installation, after tasks
     chown -R krmx:krmx /opt/kronometrix/kernel || :
-    if [ ! -L /etc/init.d/kronometrix_kernel ]; then
-        ln -s /opt/kronometrix/kernel/etc/rc/kronometrix_kernel /etc/init.d/kronometrix_kernel || :
+    if [ ! -L /etc/init.d/kronometrix_mesg ]; then
+        ln -s /opt/kronometrix/kernel/etc/rc/kronometrix_mesg /etc/init.d/kronometrix_mesg || :
     fi
 
-    chkconfig --add kronometrix_kernel || :
-    /etc/init.d/kronometrix_kernel start >/dev/null 2>&1 || :
+    chkconfig --add kronometrix_mesg || :
+    /etc/init.d/kronometrix_mesg start >/dev/null 2>&1 || :
     # chown -R krmx:krmx /opt/kronometrix/kernel || :
 
 elif [ $1 -eq 2 ]; then
     # upgrade
     chown -R krmx:krmx /opt/kronometrix/kernel || :
-    /etc/init.d/kronometrix_kernel start >/dev/null 2>&1 || :
+    /etc/init.d/kronometrix_mesg start >/dev/null 2>&1 || :
 fi
 
 # before removal
 %preun
 if [ $1 -eq 0 ]; then
-    chkconfig kronometrix_kernel off || :
-    chkconfig --del kronometrix_kernel || :
+    chkconfig kronometrix_mesg off || :
+    chkconfig --del kronometrix_mesg || :
 
     # uinstall
-    if [ -f /etc/init.d/kronometrix_kernel ]; then
-        /etc/init.d/kronometrix_kernel stop >/dev/null 2>&1 || :
-        rm -f /etc/init.d/kronometrix_kernel || :
+    if [ -f /etc/init.d/kronometrix_mesg ]; then
+        /etc/init.d/kronometrix_mesg stop >/dev/null 2>&1 || :
+        rm -f /etc/init.d/kronometrix_mesg || :
     fi
 fi
