@@ -1,0 +1,143 @@
+#%define        __spec_install_post %{nil}
+#%define          debug_package %{nil}
+#%define        __os_install_post %{_dbpath}/brp-compress
+
+%ifarch x86_64
+ 
+%define _arch x86_64
+ 
+%endif
+
+%ifarch i686
+ 
+%define _arch i686
+ 
+%endif
+
+%ifarch i386
+ 
+%define _arch i386
+ 
+%endif
+
+
+Summary: Kronometrix Analytics Appliance Kernel
+Name: kronometrix-kernel
+Version: 1.0.0
+Release: b60
+Group: System/Monitoring/Tools
+License: MIT
+URL: http://www.kronometrix.com/
+Source: %{name}-%{version}-%{_arch}.tar.bz2
+BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
+AutoReqProv: no
+# Requires: ksh
+BuildArch: %{_arch}
+
+%description
+All in a simple package: consistent data recording across various types of systems, easy access to raw data, built to handle data messages in real-time and designed for time series analysis.
+
+
+%prep
+%setup -n kronometrix
+# In the prep section the tar.gz file gets unpacked to a directory.
+# the directory is
+
+%build
+# Normally this part would be full of fancy compile stuff. Make this, make that.
+# We simple folks, we just want to copy some files out of a tar.gz.
+# so we pass this section with nothing done...
+
+%install
+# Installing happens here
+# command, it normally places the files
+# where they need to go. You can also copy the files, as we do here...
+
+# First we make sure we start clean
+rm -rf $RPM_BUILD_ROOT
+
+# Then we create the directories where the files go
+# don't worry if the directories exist on your target systems, rpm
+# creates if necessary
+mkdir -p $RPM_BUILD_ROOT/opt/kronometrix
+
+# The actual moving
+cp -a * $RPM_BUILD_ROOT/opt/kronometrix
+
+
+%clean
+rm -rf "$RPM_BUILD_ROOT"
+
+
+%files
+%defattr(755,krmx,krmx)
+/opt/kronometrix/kernel/*
+
+# before install
+%pre
+if [ $1 -eq 1 ]; then
+    # initial installation
+    if [ -f /etc/init.d/kronometrix_kernel ]; then
+        /etc/init.d/kronometrix_kernel stop >/dev/null 2>&1 || :
+    fi
+
+    if ! getent group krmx >/dev/null; then
+        groupadd -g 5000 krmx || :
+    fi
+
+    if ! getent passwd krmx >/dev/null; then
+        useradd -u 5000 -g krmx -d /home/krmx -m krmx || :
+    fi
+
+    if [ ! -d /opt/kronometrix/kernel ]; then
+        mkdir -p /opt/kronometrix/kernel || :
+    fi
+elif [ $1 -eq 2 ]; then
+    # upgrade
+    if [ -f /etc/init.d/kronometrix/kernel ]; then
+        /etc/init.d/kronometrix_kernel stop >/dev/null 2>&1 || :
+    fi
+
+    if ! getent group krmx >/dev/null; then
+        groupadd -g 5000 krmx || :
+    fi
+
+    if ! getent passwd krmx >/dev/null; then
+        useradd -u 5000 -g krmx -d /home/krmx -m krmx || :
+    fi
+
+fi
+# echo krmx123|passwd --stdin krmx
+
+
+# after install
+%post
+if [ $1 -eq 1 ]; then
+    # initial installation, after tasks
+    chown -R krmx:krmx /opt/kronometrix/kernel || :
+    if [ ! -L /etc/init.d/kronometrix_kernel ]; then
+        ln -s /opt/kronometrix/kernel/etc/rc/kronometrix_kernel /etc/init.d/kronometrix_kernel || :
+    fi
+
+    chkconfig --add kronometrix_kernel || :
+    /etc/init.d/kronometrix_kernel start >/dev/null 2>&1 || :
+    # chown -R krmx:krmx /opt/kronometrix/kernel || :
+
+elif [ $1 -eq 2 ]; then
+    # upgrade
+    chown -R krmx:krmx /opt/kronometrix/kernel || :
+    /etc/init.d/kronometrix_kernel start >/dev/null 2>&1 || :
+fi
+
+# before removal
+%preun
+if [ $1 -eq 0 ]; then
+    chkconfig kronometrix_kernel off || :
+    chkconfig --del kronometrix_kernel || :
+
+    # uinstall
+    if [ -f /etc/init.d/kronometrix_kernel ]; then
+        /etc/init.d/kronometrix_kernel stop >/dev/null 2>&1 || :
+        rm -f /etc/init.d/kronometrix_kernel || :
+    fi
+fi
