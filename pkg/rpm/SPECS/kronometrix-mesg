@@ -89,12 +89,12 @@ if [ $1 -eq 1 ]; then
         useradd -u 5000 -g krmx -d /home/krmx -m krmx || :
     fi
 
-    if [ ! -d /opt/kronometrix/kernel ]; then
-        mkdir -p /opt/kronometrix/kernel || :
+    if [ ! -d /opt/kronometrix/mesg ]; then
+        mkdir -p /opt/kronometrix/mesg || :
     fi
 elif [ $1 -eq 2 ]; then
     # upgrade
-    if [ -f /etc/init.d/kronometrix/kernel ]; then
+    if [ -f /etc/init.d/kronometrix_mesg ]; then
         /etc/init.d/kronometrix_mesg stop >/dev/null 2>&1 || :
     fi
 
@@ -107,16 +107,14 @@ elif [ $1 -eq 2 ]; then
     fi
 
 fi
-# echo krmx123|passwd --stdin krmx
-
 
 # after install
 %post
 if [ $1 -eq 1 ]; then
     # initial installation, after tasks
-    chown -R krmx:krmx /opt/kronometrix/kernel || :
+    chown -R krmx:krmx /opt/kronometrix/mesg || :
     if [ ! -L /etc/init.d/kronometrix_mesg ]; then
-        ln -s /opt/kronometrix/kernel/etc/rc/kronometrix_mesg /etc/init.d/kronometrix_mesg || :
+        ln -s /opt/kronometrix/mesg/etc/rc/kronometrix_mesg /etc/init.d/kronometrix_mesg || :
     fi
 
     chkconfig --add kronometrix_mesg || :
@@ -125,7 +123,7 @@ if [ $1 -eq 1 ]; then
 
 elif [ $1 -eq 2 ]; then
     # upgrade
-    chown -R krmx:krmx /opt/kronometrix/kernel || :
+    chown -R krmx:krmx /opt/kronometrix/mesg || :
     /etc/init.d/kronometrix_mesg start >/dev/null 2>&1 || :
 fi
 
