@@ -1,9 +1,12 @@
 
 Messenger Package
 
+1.0.0 b20
+    Take advangate of resty.core, and an init file #5
+
 1.0.0 b12
-  change: kronometrix/mesg openresty 1.7.10.1 update #3
-  change: kronometrix/mesg smtp update #4
+    change: kronometrix/mesg openresty 1.7.10.1 update #3
+    change: kronometrix/mesg smtp update #4
 
 1.0.0 b1
-  change: kronometrix/mesg initial package
+    change: kronometrix/mesg initial package
