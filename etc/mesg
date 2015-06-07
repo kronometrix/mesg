@@ -35,12 +35,12 @@ test -f ${MESG_HTTP} || exit 0
 
 
 start() {
-    ${MESG_HTTP} start >/dev/null 2>&1
+    ${MESG_HTTP} start
 }
 
 
 stop() {
-    ${MESG_HTTP} stop >/dev/null 2>&1
+    ${MESG_HTTP} stop
 }
 
 
