@@ -1,6 +1,9 @@
 
 Messenger Package
 
+1.0.0 b102
+    Syncronize with auth, kernel release version
+
 1.0.0 b20
     Take advangate of resty.core, and an init file #5
 
