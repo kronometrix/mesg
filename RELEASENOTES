@@ -1,6 +1,9 @@
 
 Messenger Package
 
+1.0.110
+    update openresty-1.7.10.2 #6
+
 1.0.0 b102
     Syncronize with auth, kernel release version
 
