@@ -21,13 +21,13 @@
 #
 # Add the following lines to /etc/rc.conf to enable Kronometrix
 #
-# kronometrix_mesg_enable="YES"
-# kronometrix_mesg_user="krmx"
+# kmesg_enable="YES"
+# kmesg_user="krmx"
 
 . /etc/rc.subr
 
-name=kronometrix_mesg
-rcvar=kronometrix_mesg_enable
+name=kmesg
+rcvar=kmesg_enable
 
 load_rc_config ${name}
 
@@ -36,24 +36,24 @@ start_cmd="${name}_start"
 stop_cmd="${name}_stop"
 status_cmd="${name}_status"
 
-: ${kronometrix_mesg_enable="YES"}
-: ${kronometrix_mesg_user="krmx"}
-: ${kronometrix_mesg_args=""}
+: ${kmesg_enable="YES"}
+: ${kmesg_user="krmx"}
+: ${kmesg_args=""}
 
-kronometrix_mesg_start() {
+kmesg_start() {
     unset "${rc_arg}_cmd"
     local cmd
-    kronometrix_mesg_args="start"
-    cmd="${command} ${kronometrix_mesg_args}"
-    su -m ${kronometrix_mesg_user} -c "${cmd}" 
+    kmesg_args="start"
+    cmd="${command} ${kmesg_args}"
+    su -m ${kmesg_user} -c "${cmd}" 
 }
 
 
-kronometrix_mesg_stop() {
+kmesg_stop() {
     local cmd
-    kronometrix_mesg_args="stop"
-    cmd="${command} ${kronometrix_mesg_args}"
-    su -m ${kronometrix_mesg_user} -c "${cmd}"
+    kmesg_args="stop"
+    cmd="${command} ${kmesg_args}"
+    su -m ${kmesg_user} -c "${cmd}"
 }
 
 
