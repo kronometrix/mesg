@@ -1,4 +1,4 @@
-name: "kronometrix-mesg"
+name: "kmesg"
 version: "1.0.0"
 origin: "sysutils/kronometrix-mesg"
 comment: "A time-series data monitoring and analysis system. Messenger Module"

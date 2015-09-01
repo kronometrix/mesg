@@ -15,16 +15,16 @@ fi
 
 if [ $2 == "POST-INSTALL" ]; then
     chown -R krmx:krmx /opt/kronometrix/mesg
-    cp /opt/kronometrix/mesg/etc/rc/kronometrix_mesg /etc/rc.d/
-    /etc/rc.d/kronometrix_mesg onestart
+    cp /opt/kronometrix/mesg/etc/rc/kmesg /etc/rc.d/
+    /etc/rc.d/kmesg onestart
 
     # install service
-    grep kronometrix_mesg ${RC_CONF} >/dev/null 2>&1
+    grep kmesg ${RC_CONF} >/dev/null 2>&1
 
     if [ $? -eq 1 ]; then
         # add the service
-        echo "kronometrix_mesg=\"YES\"" >> ${RC_CONF}
-        echo "kronometrix_mesg_user=\"krmx\"" >> ${RC_CONF}
+        echo "kmesg=\"YES\"" >> ${RC_CONF}
+        echo "kmesg_user=\"krmx\"" >> ${RC_CONF}
         if [ $? -eq 1 ]; then
             echo "Error: cannot activate service, exit now"
             exit 1
