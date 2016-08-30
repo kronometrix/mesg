@@ -1,15 +1,10 @@
 #!/bin/sh
-#
-# chkconfig: 2345 96 10
-# description: kronometrix analytics appliance messenger
-# 
-# /etc/init.d/kronometrix_mesg
-#
+
 # The MIT License (MIT)
-#
-# Copyright (c) 2015 Stefan Parvu (www.kronometrix.org).
-# Copyright (c) 2015 SDR Dynamics Oy
-#
+
+# Copyright (c) 2016 Kronometrix
+# Copyright (c) 2016 SDR Dynamics Oy
+
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
@@ -33,7 +28,6 @@ OS_NAME=`uname -s`
 
 BASEDIR="/opt/kronometrix/mesg/etc"
 MESG_HTTP="${BASEDIR}/http"
-KRMX_USER="krmx"
 
 # basedir test
 test -d ${BASEDIR} || exit 0
@@ -41,12 +35,12 @@ test -f ${MESG_HTTP} || exit 0
 
 
 start() {
-    su - $KRMX_USER -c "${MESG_HTTP} start >/dev/null 2>&1"
+    ${MESG_HTTP} start
 }
 
 
 stop() {
-    su - $KRMX_USER -c "${MESG_HTTP} stop >/dev/null 2>&1"
+    ${MESG_HTTP} stop
 }
 
 
