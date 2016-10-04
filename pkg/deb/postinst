@@ -3,15 +3,15 @@
 # initial installation, after tasks
 chown -R krmx:krmx /opt/kronometrix/mesg || :
 
-if [ ! -L /etc/init.d/kronometrix_mesg ]; then
-    ln -s /opt/kronometrix/mesg/etc/rc/kronometrix_mesg /etc/init.d/kronometrix_mesg || :
+if [ ! -L /etc/init.d/kmesg ]; then
+    ln -s /opt/kronometrix/mesg/etc/rc/kmesg /etc/init.d/kmesg || :
 fi
 
 # link here kronometrix.mesg
-update-rc.d kronometrix_mesg start 20 2 3 4 5 . stop 20 0 1 6 . >/dev/null 2>&1 || :
+update-rc.d kmesg start 20 2 3 4 5 . stop 20 0 1 6 . >/dev/null 2>&1 || :
 
 if [ -d /opt/kronometrix/mesg/logs ]; then
     chown -R krmx:krmx /opt/kronometrix/mesg/logs || :
 fi
 
-/etc/init.d/kronometrix_mesg start >/dev/null 2>&1 || :
+/etc/init.d/kmesg start >/dev/null 2>&1 || :

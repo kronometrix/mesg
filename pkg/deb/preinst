@@ -2,9 +2,9 @@
 
 # echo "preinst: preparing to install package"
 # initial installation
-if [ -L /etc/init.d/kronometrix_mesg ]; then
+if [ -L /etc/init.d/kmesg ]; then
     # echo "preinst: stopping kronometrix mesg..."
-    /etc/init.d/kronometrix_mesg stop >/dev/null 2>&1 || :
+    /etc/init.d/kmesg stop >/dev/null 2>&1 || :
 fi
 
 if ! getent group krmx >/dev/null; then

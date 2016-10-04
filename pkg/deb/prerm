@@ -1,9 +1,9 @@
 #!/bin/sh
 
-update-rc.d -f kronometrix_mesg remove >/dev/null 2>&1 || : 
+update-rc.d -f kmesg remove >/dev/null 2>&1 || : 
 
 # uinstall
-if [ -L /etc/init.d/kronometrix_mesg ]; then
-    /etc/init.d/kronometrix_mesg stop >/dev/null 2>&1 || :
-    rm -f /etc/init.d/kronometrix_mesg || :
+if [ -L /etc/init.d/kmesg ]; then
+    /etc/init.d/kmesg stop >/dev/null 2>&1 || :
+    rm -f /etc/init.d/kmesg || :
 fi
