@@ -21,7 +21,7 @@ http {
     tcp_nodelay    on;
 
     keepalive_timeout 30;
-
+    etag off;
     gzip off;
 
     lua_package_path ";;${prefix}../app/?.lua;";
