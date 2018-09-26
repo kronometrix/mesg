@@ -29,13 +29,22 @@ http {
     lua_shared_dict sessions 10m;
 
     init_by_lua_file "../app/init.lua";
-        
+
     server {
         listen 127.0.0.1:9000;
         index index.html;
         root ../static;
 
         # include application routes; this path is relative to this conf file!
-        include ../../app/conf/*.conf;
+        include ../../app/conf/mesg.conf;
+    }
+
+    server {
+        listen 127.0.0.1:9105;
+        index index.html;
+        root ../static;
+
+        # include application routes; this path is relative to this conf file!
+        include ../../app/conf/mesg-api.conf;
     }
 }
